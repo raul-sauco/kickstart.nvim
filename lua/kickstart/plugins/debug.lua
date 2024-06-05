@@ -92,5 +92,45 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- NOTE: Adding llb and the rust adapter is a custom addition to the default kickstart debug file.
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        -- Change this to your path!
+        command = '/Users/i/.vscode/extensions/vadimcn.vscode-lldb-1.10.0/adapter/codelldb',
+        args = { '--port', '${port}' },
+      },
+    }
+
+    dap.configurations.rust = {
+      {
+        name = 'Launch',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        -- TODO: Configure this to use launchjson.
+        -- program = vim.fn.getcwd() .. "/" .. "target/debug/rust-fun",
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+        args = {},
+
+        -- 💀
+        -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+        --
+        --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        --
+        -- Otherwise you might get the following error:
+        --
+        --    Error on launch: Failed to attach to the target process
+        --
+        -- But you should be aware of the implications:
+        -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+        -- runInTerminal = false,
+      },
+    }
   end,
 }
