@@ -576,7 +576,11 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
+        eslint = {},
+        jsonls = {},
+        cssls = {},
+        html = {},
         --
 
         lua_ls = {
@@ -639,6 +643,9 @@ require('lazy').setup({
         desc = '[F]ormat buffer',
       },
     },
+    -- This will provide type hinting with LuaLS
+    ---@module "conform"
+    ---@type conform.setupOpts
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
@@ -658,7 +665,8 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { { 'prettierd', 'prettier', stop_after_first = true } },
+        scss = { { 'prettier' } },
       },
     },
   },
