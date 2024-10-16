@@ -159,6 +159,18 @@ vim.opt.scrolloff = 8
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
+-- Use this defaults for new files
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'dart', 'javascript', 'lua' },
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+  end,
+})
+
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
